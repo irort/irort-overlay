@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<repositories version="1.0">
+<repo priority="50" status="unofficial">
+	<name>irort-overlay</name>
+	<description>irort's personal Gentoo overlay</description>
+	<homepage>https://github.com/irort/irort-overlay</homepage>
+	<owner>
+		<email>2472822424@qq.com</email>
+		<name>irort</name>
+	</owner>
+	<source type="git">https://github.com/irort/irort-overlay.git</source>
+	<feed>https://github.com/irort/irort-overlay/commits/master.atom</feed>
+</repo>
+</repositories>
