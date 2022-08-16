@@ -2,6 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
+inherit cmake xdg git-r3
 
 DESCRIPTION="Qt GUI fontend of v2ray"
 HOMEPAGE="https://qv2ray.net/"
