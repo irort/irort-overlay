@@ -31,9 +31,9 @@ RDEPEND="
 BDEPEND="
 		dev-qt/linguist-tools:5
 "
-src_prepare() {
-	cmake_src_prepare
-	xdg_environment_reset
+src_unpack() {
+	git-r3_fetch ${EGIT_REPO_URI}
+	git-r3_checkout ${EGIT_REPO_URI} "${S}"/${P}
 }
 
 src_configure() {
