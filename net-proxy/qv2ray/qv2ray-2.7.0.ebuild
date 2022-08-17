@@ -7,7 +7,7 @@ inherit cmake xdg git-r3
 DESCRIPTION="Qt GUI fontend of v2ray"
 HOMEPAGE="https://qv2ray.net/"
 EGIT_REPO_URI="https://github.com/${PN}/${PN}.git"
-EGIT_SUBMODULES=( '*' '-3rdparty/zxing-cpp' )
+EGIT_SUBMODULES=( '*' )
 EGIT_COMMIT=v${PV}
 
 LICENSE="GPL-3"
@@ -32,9 +32,9 @@ RDEPEND="
 BDEPEND="
 		dev-qt/linguist-tools:5
 "
-src_unpack() {
-	git-r3_fetch ${EGIT_REPO_URI}
-	git-r3_checkout ${EGIT_REPO_URI} "${S}"/${P}
+src_prepare() {
+	cmake_src_prepare
+	xdg_environment_reset
 }
 
 src_configure() {
