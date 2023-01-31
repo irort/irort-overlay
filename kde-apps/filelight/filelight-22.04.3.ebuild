@@ -19,23 +19,22 @@ KEYWORDS="amd64 arm64 ~ppc64 ~riscv x86"
 IUSE=""
 
 PATCHES=(
-        "${FILESDIR}"/${PN}-22.04.3-fix_musl_dev_bsize.patch
-        "${FILESDIR}"/${PN}-22.04.3-fix_sincos_impl.patch
+	"${FILESDIR}"/${PN}-22.04.3-fix_musl_dev_bsize.patch
+	"${FILESDIR}"/${PN}-22.04.3-fix_sincos_impl.patch
 )
 
 DEPEND="
-        >=dev-qt/qtgui-${QTMIN}:5
-        >=dev-qt/qtsvg-${QTMIN}:5
-        >=dev-qt/qtwidgets-${QTMIN}:5
-        >=kde-frameworks/kcompletion-${KFMIN}:5
-        >=kde-frameworks/kconfig-${KFMIN}:5
-        >=kde-frameworks/kconfigwidgets-${KFMIN}:5
-        >=kde-frameworks/kcoreaddons-${KFMIN}:5
-        >=kde-frameworks/ki18n-${KFMIN}:5
-        >=kde-frameworks/kio-${KFMIN}:5
-        >=kde-frameworks/kservice-${KFMIN}:5
-        >=kde-frameworks/kwidgetsaddons-${KFMIN}:5
-        >=kde-frameworks/kxmlgui-${KFMIN}:5
+	>=dev-qt/qtgui-${QTMIN}:5
+	>=dev-qt/qtsvg-${QTMIN}:5
+	>=dev-qt/qtwidgets-${QTMIN}:5
+	>=kde-frameworks/kcompletion-${KFMIN}:5
+	>=kde-frameworks/kconfig-${KFMIN}:5
+	>=kde-frameworks/kconfigwidgets-${KFMIN}:5
+	>=kde-frameworks/kcoreaddons-${KFMIN}:5
+	>=kde-frameworks/ki18n-${KFMIN}:5
+	>=kde-frameworks/kio-${KFMIN}:5
+	>=kde-frameworks/kservice-${KFMIN}:5
+	>=kde-frameworks/kwidgetsaddons-${KFMIN}:5
+	>=kde-frameworks/kxmlgui-${KFMIN}:5
 "
 RDEPEND="${DEPEND}"
-
