@@ -14,7 +14,7 @@ SLOT="0"
 KEYWORDS="~amd64"
 IUSE="+tun"
 
-RESTRICT="mirror"
+RESTRICT="mirror strip"
 
 QA_PRESTRIPPED="*"
 QA_PREBUILT="*"
