@@ -38,8 +38,8 @@ src_install() {
 	domenu "${FILESDIR}/${PN}.desktop"
 	dosym -r "/opt/${PN}/cfw" "/usr/bin/cfw"
 	fperms 0755 "/opt/${PN}" -R
-	dosym -r "${S}/${PN}/resources/static/files/linux/x64/service/clash-core-service" "/usr/bin/clash-core-service"
-	newinitd "{FILESDIR}/clash.initd" clash
+	dosym -r "/opt/${PN}/resources/static/files/linux/x64/service/clash-core-service" "/usr/bin/clash-core-service"
+	newinitd "${FILESDIR}"/clash.initd clash
 }
 
 pkg_postinst() {
