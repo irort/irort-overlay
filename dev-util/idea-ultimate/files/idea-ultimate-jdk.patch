@@ -1,11 +1,11 @@
---- a/bin/idea.sh	2021-04-29 14:52:57.173162184 -0400
-+++ b/bin/idea.sh	2021-04-29 14:54:40.733748978 -0400
-@@ -52,6 +52,8 @@ PATHS_SELECTOR="IdeaIC2021.1"
+--- a/bin/idea.sh
++++ b/bin/idea.sh
+@@ -52,6 +52,8 @@ JRE=""
  # shellcheck disable=SC2154
  if [ -n "$IDEA_JDK" ] && [ -x "$IDEA_JDK/bin/java" ]; then
    JRE="$IDEA_JDK"
 +else
-+  JRE="/opt/openjdk-bin-17" && [[ -d "/opt/openjdk-17" ]] && JRE="/usr/lib64/openjdk-bin-17"
++  JRE="/usr/lib64/openjdk-17" && [[ -d "/opt/openjdk-17" ]] && JRE="/usr/lib64/openjdk-bin-17"
  fi
  
- BITS=""
+ if [ -z "$JRE" ] && [ -s "${CONFIG_HOME}/JetBrains/IntelliJIdea2022.2/idea.jdk" ]; then
