@@ -38,8 +38,16 @@ src_install() {
 	domenu "${FILESDIR}/${PN}.desktop"
 	dosym -r "/opt/${PN}/cfw" "/usr/bin/cfw"
 	fperms 0755 "/opt/${PN}" -R
+	dosym -r "${S}/${PN}/resources/static/files/linux/x64/service/clash-core-service" "/usr/bin/clash-core-service"
+	newinitd "{FILESDIR}/clash.initd" clash
 }
 
 pkg_postinst() {
+	elog
+	elog "For OpenRC user, if you need Service Mode, "
+	elog "please start and add clash daemon to default runlevel"
+	elog "# /etc/init.d/clash start"
+	elog "# rc-update add clash default"
+	elog
 	xdg_icon_cache_update
 }

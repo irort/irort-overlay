@@ -1,0 +1,13 @@
+#!/sbin/openrc-run
+# Copyright 2023 Gentoo Authors
+# Distributed under the terms of the GNU General Public License v2
+
+name="Clash core service"
+description="Clash core service created by Clash for Windows"
+command="/usr/bin/clash-core-service"
+command_background="yes"
+pidfile="/run/clash.pid"
+
+depend() {
+    need net
+}
