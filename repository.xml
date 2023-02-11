@@ -5,7 +5,7 @@
 	<description>irort's personal Gentoo overlay</description>
 	<homepage>https://github.com/irort/irort-overlay</homepage>
 	<owner>
-		<email>2472822424@qq.com</email>
+		<email>irort3124@gmail.com</email>
 		<name>irort</name>
 	</owner>
 	<source type="git">https://github.com/irort/irort-overlay.git</source>
