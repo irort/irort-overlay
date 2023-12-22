@@ -7,7 +7,7 @@ inherit desktop unpacker xdg-utils
 
 DESCRIPTION="A Windows/macOS/Linux GUI based on Clash and Electron."
 HOMEPAGE="https://github.com/Fndroid/clash_for_windows_pkg"
-SRC_URI="https://github.com/Fndroid/clash_for_windows_pkg/releases/download/${PV}/Clash.for.Windows-${PV}-x64-linux.tar.gz"
+SRC_URI="https://web.archive.org/web/20231101083947/https://github.com/Fndroid/clash_for_windows_pkg/releases/download/${PV}/Clash.for.Windows-${PV}-x64-linux.tar.gz"
 
 LICENSE="no-source-code"
 SLOT="0"
