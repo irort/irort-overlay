@@ -35,9 +35,9 @@ S="${WORKDIR}/Telegram"
 
 src_install() {
 	newbin Telegram telegram-desktop
-
-	insinto /etc/tdesktop
-	newins - externalupdater <<<"${EPREFIX}/usr/bin/telegram-desktop"
+	# Disable the official Telegram Desktop updater
+	insinto /usr/share/TelegramDesktop/externalupdater.d
+	newins - telegram-desktop.conf <<<"${EPREFIX}/usr/bin/telegram-desktop"
 
 	local icon_size
 	for icon_size in 16 32 48 64 128 256 512; do
