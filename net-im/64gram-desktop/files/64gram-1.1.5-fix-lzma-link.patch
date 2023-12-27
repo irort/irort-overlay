@@ -1,0 +1,50 @@
+--- a/Telegram/CMakeLists.txt
++++ b/Telegram/CMakeLists.txt
+@@ -86,6 +86,7 @@ PRIVATE
+     desktop-app::external_qr_code_generator
+     desktop-app::external_crash_reports
+     desktop-app::external_auto_updates
++    desktop-app::external_lzma
+     desktop-app::external_openssl
+     desktop-app::external_openal
+     desktop-app::external_xxhash
+@@ -1851,6 +1852,7 @@ if (NOT DESKTOP_APP_DISABLE_AUTOUPDATE AND NOT build_macstore AND NOT build_wins
+             desktop-app::external_qt
+             desktop-app::external_zlib
+             desktop-app::external_auto_updates
++            desktop-app::external_lzma
+             desktop-app::external_openssl
+         )
+ 
+--- a/cmake/external/CMakeLists.txt
++++ b/cmake/external/CMakeLists.txt
+@@ -42,6 +42,7 @@ add_checked_subdirectory(jpeg)
+ add_checked_subdirectory(kcoreaddons)
+ add_checked_subdirectory(kimageformats)
+ add_checked_subdirectory(lz4)
++add_checked_subdirectory(lzma)
+ add_checked_subdirectory(minizip)
+ if (LINUX)
+     add_checked_subdirectory(nimf_qt5)
+--- /dev/null
++++ b/cmake/external/lzma/CMakeLists.txt
+@@ -0,0 +1,19 @@
++# This file is inspired by Desktop App Toolkit,
++# a set of libraries for developing nice desktop applications.
++#
++# For license and copyright information please follow this link:
++# https://github.com/desktop-app/legal/blob/master/LEGAL
++
++if (DESKTOP_APP_USE_PACKAGED)
++    if (DESKTOP_APP_DISABLE_AUTOUPDATE)
++        add_library(external_lzma INTERFACE IMPORTED GLOBAL)
++        add_library(desktop-app::external_lzma ALIAS external_lzma)
++        find_package(PkgConfig REQUIRED)
++        pkg_check_modules(LZMA REQUIRED IMPORTED_TARGET liblzma)
++        target_link_libraries(external_lzma INTERFACE PkgConfig::LZMA)
++        return()
++    else()
++        # See auto_update directory contents
++    endif()
++    message(FATAL_ERROR "DEKSTOP_APP_USE_PACKAGED expected to be TRUE")
++endif()
