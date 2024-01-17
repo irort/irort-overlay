@@ -1,0 +1,39 @@
+#!/sbin/openrc-run
+# Copyright 2024 Gentoo Authors
+# Distributed under the terms of the GNU General Public License v2
+
+TJG_USER=trojan-go
+TJG_GROUP=trojan-go
+
+TJG_NAME=${SVCNAME##*.}
+if [ -n "${TJG_NAME}" -a "${SVCNAME}" != "trojan-go" ]; then
+	TJG_PIDFILE="/run/trojan-go.${TJG_NAME}.pid"
+	TJG_CONFIG="/etc/trojan-go/${TJG_NAME}.json"
+	TJG_LOG="/var/log/trojan-go.${TJG_NAME}.log"
+else
+	TJG_PIDFILE="/run/trojan-go.pid"
+	TJG_CONFIG="/etc/trojan-go/config.json"
+	TJG_LOG="/var/log/trojan-go.log"
+fi
+depend() {
+        need net
+}
+
+start() {
+	ebegin "Starting Trojan-Go, Log File: ${TJG_LOG}"
+	checkpath -f -m 0600 -o ${TJG_USER}:${TJG_GROUP} "${TJG_LOG}"
+	start-stop-daemon --start --background \
+		--user ${TJG_USER} --group ${TJG_GROUP} \
+		--stdout "${TJG_LOG}" --stderr "${TJG_LOG}" \
+		--make-pidfile --pidfile "${TJG_PIDFILE}" \
+		--exec /usr/bin/trojan-go  -- -config "${TJG_CONFIG}"
+	eend $?
+}
+
+stop() {
+	ebegin "Stopping Trojan-Go"
+	start-stop-daemon --stop \
+		--user ${TJG_USER} --group ${TJG_GROUP} \
+		--pidfile "${TJG_PIDFILE}"
+	eend $?
+}
