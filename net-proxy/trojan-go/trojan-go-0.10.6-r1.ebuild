@@ -8,7 +8,8 @@ inherit systemd go-module
 DESCRIPTION="A Trojan proxy written in Go."
 HOMEPAGE="
 		https://github.com/p4gefau1t/trojan-go
-		https://p4gefau1t.github.io/trojan-go"
+		https://p4gefau1t.github.io/trojan-go
+"
 SRC_URI="
 		https://github.com/p4gefau1t/${PN}/archive/refs/tags/v${PV}.tar.gz -> ${P}.tar.gz
 		https://github.com/irort/gentoo-deps/releases/download/${P}/${P}-deps.tar.xz
@@ -32,7 +33,7 @@ RDEPEND="
 BDEPEND="dev-lang/go"
 
 src_prepare() {
-		sed -i '/^User=/s/nobody/trojan-go/;/^User=/aDynamicUser=true' example/*.service || die
+		sed -i '/^User=/s/nobody/trojan-go/' example/*.service || die
 		default
 }
 
@@ -51,4 +52,7 @@ src_install() {
 		newinitd "${FILESDIR}/trojan-go.initd" trojan-go
 		systemd_newunit example/trojan-go.service trojan-go.service
 		systemd_newunit example/trojan-go@.service trojan-go@.service
+
+		dosym -r "/usr/share/v2ray/geosite.dat" /usr/share/trojan-go/geosite.dat
+		dosym -r "/usr/share/v2ray/geoip.dat" /usr/share/trojan-go/geoip.dat
 }
