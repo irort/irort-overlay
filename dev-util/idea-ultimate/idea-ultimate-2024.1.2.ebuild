@@ -1,26 +1,33 @@
-# Copyright 1999-2022 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
 inherit desktop wrapper
 
+MY_PV=$(ver_cut 1-3)
+
 DESCRIPTION="A complete toolset for web, mobile and enterprise development"
 HOMEPAGE="https://www.jetbrains.com/idea"
-SRC_URI="https://download.jetbrains.com/idea/ideaIU-${PV}.tar.gz -> ${P}.tar.gz"
 
+SRC_URI="
+	amd64? ( https://download.jetbrains.com/idea/ideaIU-${MY_PV}.tar.gz -> ${P}-amd64.tar.gz )
+	arm64? ( https://download.jetbrains.com/idea/ideaIU-${MY_PV}-aarch64.tar.gz -> ${P}-aarch64.tar.gz )
+	"
+
+S="${WORKDIR}/idea-IU-${PV}"
 LICENSE="Apache-2.0 BSD BSD-2 CC0-1.0 CC-BY-2.5 CDDL-1.1
 	codehaus-classworlds CPL-1.0 EPL-1.0 EPL-2.0
 	GPL-2 GPL-2-with-classpath-exception ISC
 	JDOM LGPL-2.1 LGPL-2.1+ LGPL-3-with-linking-exception MIT
-	MPL-1.0 MPL-1.1 OFL ZLIB"
+	MPL-1.0 MPL-1.1 OFL-1.1 ZLIB"
 
 SLOT="0"
 KEYWORDS="~amd64 ~arm64"
 
 DEPEND="
 	|| (
-		>=dev-java/openjdk-17.0.3_p7-r1:17
-		>=dev-java/openjdk-bin-17.0.3_p7:17
+		>=dev-java/openjdk-17.0.8.1_p1:17
+		>=dev-java/openjdk-bin-17.0.8.1_p1:17
 	)"
 
 RDEPEND="${DEPEND}
@@ -30,14 +37,9 @@ RDEPEND="${DEPEND}
 	dev-libs/libdbusmenu"
 
 BDEPEND="dev-util/patchelf"
-RESTRICT="splitdebug"
-S="${WORKDIR}/idea-IU-${PV}"
+RESTRICT="mirror splitdebug"
 
 QA_PREBUILT="opt/${PN}/*"
-
-PATCHES=(
-	"${FILESDIR}/${PN}-jdk.patch"
-)
 
 src_unpack() {
 
@@ -54,8 +56,10 @@ src_prepare() {
 
 	if use amd64; then
 		JRE_DIR=jre64
+		rm -vf "${S}"/plugins/cwm-plugin/quiche-native/linux-aarch64/libquiche.so
 	else
 		JRE_DIR=jre
+		rm -vf "${S}"/plugins/cwm-plugin/quiche-native/linux-x86-64/libquiche.so
 	fi
 
 	PLUGIN_DIR="${S}/${JRE_DIR}/lib/"
@@ -67,7 +71,6 @@ src_prepare() {
 	rm -vrf "${S}"/lib/pty4j-native/linux/ppc64le
 	rm -vf "${S}"/bin/libdbm64*
 	rm -vf "${S}"/lib/pty4j-native/linux/mips64el/libpty.so
-	rm -vf "${S}"/plugins/cwm-plugin/quiche-native/linux-aarch64/libquiche.so
 
 	if [[ -d "${S}"/"${JRE_DIR}" ]]; then
 		for file in "${PLUGIN_DIR}"/{libfxplugins.so,libjfxmedia.so}
@@ -78,11 +81,7 @@ src_prepare() {
 		done
 	fi
 
-	if use arm64; then
-		patchelf --replace-needed libc.so libc.so.6 "${S}"/lib/pty4j-native/linux/aarch64/libpty.so || die "Unable to patch libpty for libc"
-	else
-		rm -vf "${S}"/lib/pty4j-native/linux/{aarch64,arm,x86}/libpty.so
-	fi
+	rm -vf "${S}"/lib/pty4j-native/linux/x86-64/libpty.so
 
 	sed -i \
 		-e "\$a\\\\" \
@@ -101,7 +100,7 @@ src_install() {
 
 	insinto "${dir}"
 	doins -r *
-	fperms 755 "${dir}"/bin/{format.sh,idea.sh,inspect.sh,restart.py,fsnotifier}
+	fperms 755 "${dir}"/bin/{format.sh,idea.sh,inspect.sh,restarter,fsnotifier}
 	if use amd64; then
 		JRE_DIR=jre64
 	else
@@ -115,7 +114,8 @@ src_install() {
 		done
 	fi
 
-	local bundled_script_name="${PN%-*}.sh" # bundled script is always lowercase, and doesn't have -ultimate, -professional suffix.
+	# bundled script is always lowercase, and doesn't have -ultimate, -professional suffix.
+	local bundled_script_name="${PN%-*}.sh"
 	make_wrapper "${PN}" "${dir}/bin/$bundled_script_name" || die
 
 	local pngfile="$(find ${dst}/bin -maxdepth 1 -iname '*.png')"
