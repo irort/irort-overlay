@@ -12,6 +12,8 @@ SRC_URI="
 	amd64? ( https://github.com/TDesktop-x64/tdesktop/releases/download/v${PV}/64Gram_${PV}_linux.zip )
 "
 
+S="${WORKDIR}"
+
 LICENSE="GPL-3-with-openssl-exception"
 SLOT="0"
 KEYWORDS="-* ~amd64"
@@ -30,8 +32,6 @@ RDEPEND="
 	>=x11-libs/libxcb-1.10
 "
 BDEPEND="app-arch/unzip"
-
-S="${WORKDIR}"
 
 src_install() {
 	newbin Telegram 64gram-desktop
