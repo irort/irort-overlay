@@ -28,10 +28,19 @@ RDEPEND="
 	>=media-libs/fontconfig-2.13
 	media-libs/freetype:2
 	virtual/opengl
+	x11-libs/gtk+:3[X,wayland]
 	x11-libs/libX11
 	>=x11-libs/libxcb-1.10
 "
 BDEPEND="app-arch/unzip"
+
+src_prepare() {
+	default
+
+	sed -i -e \
+		's/^Exec=@CMAKE_INSTALL_FULL_BINDIR@\/telegram-desktop/Exec=\/usr\/bin\/64gram-desktop/' \
+		"${WORKDIR}/tdesktop-${PV}"/lib/xdg/io.github.tdesktop_x64.TDesktop.service || die
+}
 
 src_install() {
 	newbin Telegram 64gram-desktop
@@ -47,6 +56,8 @@ src_install() {
 	done
 
 	domenu "${FILESDIR}"/io.github.tdesktop_x64.TDesktop.desktop
+	insinto /usr/share/dbus-1/services
+	doins "${WORKDIR}/tdesktop-${PV}"/lib/xdg/io.github.tdesktop_x64.TDesktop.service
 }
 
 pkg_postinst() {
