@@ -5,21 +5,20 @@ EAPI=8
 
 inherit font
 
-FEDREL="fc40"
+FEDREL="fc41"
 MY_PV="${PV/_p/-}.${FEDREL}"
 
 DESCRIPTION="Twitter Emoji for everyone."
 HOMEPAGE="https://github.com/twitter/twemoji"
 SRC_URI="https://archives.fedoraproject.org/pub/fedora/linux/development/rawhide/Everything/x86_64/os/Packages/t/twitter-${PN}-fonts-${MY_PV}.noarch.rpm"
+S="${WORKDIR}/usr/share/fonts/${PN}"
 
 LICENSE="MIT CC-BY-4.0"
 SLOT="0"
 KEYWORDS="~amd64 ~arm ~arm64 ~x86"
-IUSE=""
 
 RESTRICT="bindist mirror"
 
-S="${WORKDIR}/usr/share/fonts/${PN}"
 FONT_S="${S}"
 FONT_CONF=( "${FILESDIR}/75-${PN}.conf" )
 FONT_SUFFIX="ttf"
