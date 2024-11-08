@@ -12,6 +12,8 @@ SRC_URI="
 	amd64? ( https://updates.tdesktop.com/tlinux/tsetup.${PV}.tar.xz )
 "
 
+S="${WORKDIR}/Telegram"
+
 LICENSE="GPL-3-with-openssl-exception"
 SLOT="0"
 KEYWORDS="-* ~amd64"
@@ -27,11 +29,18 @@ RDEPEND="
 	>=media-libs/fontconfig-2.13
 	media-libs/freetype:2
 	virtual/opengl
+	x11-libs/gtk+:3[X,wayland]
 	x11-libs/libX11
 	>=x11-libs/libxcb-1.10
 "
 
-S="${WORKDIR}/Telegram"
+src_prepare() {
+	default
+
+	sed -i -e \
+		's/^Exec=@CMAKE_INSTALL_FULL_BINDIR@\/telegram-desktop/Exec=\/usr\/bin\/telegram-desktop/' \
+		"${WORKDIR}/tdesktop-${PV}"/lib/xdg/org.telegram.desktop.service || die
+}
 
 src_install() {
 	newbin Telegram telegram-desktop
@@ -47,6 +56,8 @@ src_install() {
 	done
 
 	domenu "${WORKDIR}/tdesktop-${PV}"/lib/xdg/org.telegram.desktop.desktop
+	insinto /usr/share/dbus-1/services
+	doins "${WORKDIR}/tdesktop-${PV}"/lib/xdg/org.telegram.desktop.service
 }
 
 pkg_postinst() {
