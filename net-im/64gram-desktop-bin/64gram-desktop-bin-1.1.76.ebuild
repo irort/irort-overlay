@@ -38,7 +38,7 @@ src_prepare() {
 	default
 
 	sed -i -e \
-		's/^Exec=@CMAKE_INSTALL_FULL_BINDIR@\/telegram-desktop/Exec=\/usr\/bin\/64gram-desktop/' \
+		's/^Exec=@CMAKE_INSTALL_FULL_BINDIR@\/Telegram/Exec=\/usr\/bin\/64gram-desktop/' \
 		"${WORKDIR}/tdesktop-${PV}"/lib/xdg/io.github.tdesktop_x64.TDesktop.service || die
 }
 
